@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:                                
+    app: wh-rhcos
+  generateName: wg-rhcos-       
+spec:
+  hostNetwork: true
+  containers:                            
+  - image: quay.io/jugs/wg-rhcos
+    imagePullPolicy: Always
+    name: wg-rhcos
+    securityContext:
+      privileged: true
+    volumeMounts:
+      - name: overlay
+        mountPath: /tmp/overlay
+        readOnly: true
+      - name: wireguard
+        mountPath: /etc/wireguard
+  restartPolicy: Always
+  volumes:
+  - name: overlay
+    hostPath:
+      path: /var/lib/containers/storage/overlay
+  - name: wireguard
+    hostPath:
+      path: /etc/wireguard
+      type: DirectoryOrCreate
