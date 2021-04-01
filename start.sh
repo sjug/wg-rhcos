@@ -1,7 +1,6 @@
 #!/bin/bash
 set -ex
 
-RHOCP_VERSION=$(awk -F'"' '/VERSION_ID/{print $2}' /etc/os-release)
 SERVER_IP=${SERVER_IP:-192.168.111.1}
 DNS_IP=${DNS_IP:-192.168.222.1}
 KERNEL_VERSION=$(uname -r)
@@ -25,7 +24,7 @@ if [ -z "${KERNEL_CORE}" ] || [ -z "${KERNEL_DEVEL}" ] || [ -z "${KERNEL_HEADERS
   KERNEL_HEADERS=kernel-headers-${KERNEL_VERSION}
 fi
 
-dnf install -y --enablerepo=rhocp-${RHOCP_VERSION}-for-rhel-8-x86_64-rpms ${KERNEL_DEVEL} ${KERNEL_HEADERS} ${KERNEL_CORE}
+dnf install -y --enablerepo=rhel-8-for-x86_64-baseos-eus-rpms ${KERNEL_DEVEL} ${KERNEL_HEADERS} ${KERNEL_CORE}
 dnf install -y iproute iputils kmod-wireguard wireguard-tools
 dnf clean packages
 
